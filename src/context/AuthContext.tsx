@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -92,7 +93,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        
+
         // Defer profile fetch to avoid deadlock
         if (session?.user) {
           setTimeout(() => {
@@ -108,7 +109,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      
+
       if (session?.user) {
         fetchProfile(session.user.id).then((p) => {
           setProfile(p);
@@ -123,15 +124,15 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, []);
 
   const signUp = async (
-    email: string, 
-    password: string, 
-    name: string, 
+    email: string,
+    password: string,
+    name: string,
     phone?: string,
     role: AppRole = 'client',
     location?: Location
   ): Promise<{ error: Error | null }> => {
     const redirectUrl = `${window.location.origin}/`;
-    
+
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -165,7 +166,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const demoLogin = async (role: 'client' | 'staff-medical' | 'staff-bitbites'): Promise<{ error: Error | null }> => {
     const credentials = DEMO_CREDENTIALS[role];
-    
+
     // Try to sign in first
     const { error: signInError } = await supabase.auth.signInWithPassword({
       email: credentials.email,
